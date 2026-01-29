@@ -48,6 +48,10 @@ const SEO: React.FC<SEOProps> = ({
             <meta name="image" content={seoImage} />
             <link rel="canonical" href={fullUrl} />
 
+            {/* Google Discover & News Optimization */}
+            <meta name="robots" content="max-image-preview:large, index, follow" />
+            <meta name="googlebot" content="max-image-preview:large" />
+
             {/* Open Graph / Facebook */}
             <meta property="og:type" content={article ? 'article' : 'website'} />
             <meta property="og:url" content={fullUrl} />
@@ -92,6 +96,8 @@ const SEO: React.FC<SEOProps> = ({
                         "publisher": {
                             "@type": "Person",
                             "name": "Pietro Fiorillo",
+                            "jobTitle": "SEO & AI Architect",
+                            "url": `${baseUrl}/about`,
                             "image": {
                                 "@type": "ImageObject",
                                 "url": `${baseUrl}/assets/pietro.png`

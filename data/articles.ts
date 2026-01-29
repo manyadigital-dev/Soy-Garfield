@@ -69,7 +69,7 @@ export const ARTICLES: Article[] = [
         date: '22 Ene, 2024',
         category: Category.SEO,
         readTime: '10 min de lectura',
-        imageUrl: 'https://images.unsplash.com/photo-1557426272-fc759fdf7a8d?w=800&auto=format&fit=crop&q=60',
+        imageUrl: 'https://images.unsplash.com/photo-1557426272-fc759fdf7a8d?w=1200&auto=format&fit=crop&q=80',
         content: [
             { type: 'paragraph', text: 'Google ha añadido una "E" extra a su acrónimo E-A-T: Experience. Hoy en día, la experiencia de primera mano es lo único que la IA generativa no puede replicar (todavía).' },
             { type: 'heading', level: 2, text: 'La ventaja injusta del humano' },
@@ -92,7 +92,7 @@ export const ARTICLES: Article[] = [
         date: '19 Ene, 2024',
         category: Category.IA,
         readTime: '8 min de lectura',
-        imageUrl: 'https://images.unsplash.com/photo-1555099962-4199c345e5dd?w=800&auto=format&fit=crop&q=60',
+        imageUrl: 'https://images.unsplash.com/photo-1555099962-4199c345e5dd?w=1200&auto=format&fit=crop&q=80',
         content: [
             { type: 'paragraph', text: 'El prompt engineering es el nuevo lenguaje de programación del siglo XXI. Para un SEO, dominar esta habilidad significa pasar de ser un "copista" a ser un "arquitecto de contenido".' },
             { type: 'heading', level: 2, text: 'Técnicas que marcan la diferencia' },

@@ -132,11 +132,12 @@ const ArticleDetail: React.FC = () => {
     );
   }
 
+  const baseUrl = 'https://soygarfield.com';
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     "headline": articleData.title,
-    "image": articleData.imageUrl,
+    "image": articleData.imageUrl.startsWith('http') ? articleData.imageUrl : `${baseUrl}${articleData.imageUrl}`,
     "author": {
       "@type": "Person",
       "name": articleData.author,
