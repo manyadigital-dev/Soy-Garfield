@@ -23,12 +23,36 @@ const ContentRenderer: React.FC<{ blocks: ContentBlock[] }> = ({ blocks }) => {
 
           case 'quote':
             return (
-              <div key={index} className="my-12 p-10 bg-garfield-900 rounded-[2.5rem] text-white overflow-hidden relative shadow-2xl">
-                <div className="absolute top-0 right-0 -mt-10 -mr-10 h-32 w-32 bg-garfield-500 rounded-full opacity-20 blur-2xl"></div>
-                <Quote className="text-garfield-500 mb-6" size={40} />
-                <p className="text-2xl font-black italic leading-tight mb-6">"{block.text}"</p>
-                {block.author && <cite className="text-garfield-400 font-black uppercase tracking-widest text-xs">— {block.author}</cite>}
-              </div>
+              <blockquote key={index} className="my-16 px-8 sm:px-12 py-14 bg-slate-900 rounded-[3rem] text-white overflow-hidden relative shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] group">
+                {/* Decorative background glass elements */}
+                <div className="absolute top-0 right-0 -mt-12 -mr-12 h-40 w-40 bg-garfield-500 rounded-full opacity-20 blur-[60px] transition-all group-hover:opacity-30 group-hover:scale-110"></div>
+                <div className="absolute bottom-0 left-0 -mb-12 -ml-12 h-40 w-40 bg-indigo-500 rounded-full opacity-10 blur-[60px]"></div>
+
+                {/* Large decorative quotation mark */}
+                <span className="absolute -top-6 -left-2 text-[12rem] font-serif leading-none text-white/5 select-none pointer-events-none">“</span>
+
+                <div className="relative z-10">
+                  <div className="flex items-center gap-4 mb-8">
+                    <div className="h-12 w-12 rounded-2xl bg-garfield-500/10 border border-garfield-500/20 flex items-center justify-center text-garfield-500 shadow-[0_0_20px_rgba(249,115,22,0.1)]">
+                      <Quote size={24} fill="currentColor" />
+                    </div>
+                    <div className="h-px flex-grow bg-white/10"></div>
+                  </div>
+
+                  <p className="text-lg sm:text-xl font-bold italic leading-relaxed mb-6 text-slate-100/90 tracking-tight">
+                    "{block.text}"
+                  </p>
+
+                  {block.author && (
+                    <footer className="flex items-center gap-4">
+                      <div className="h-0.5 w-8 bg-garfield-500 rounded-full"></div>
+                      <cite className="text-garfield-400 font-black uppercase tracking-[0.3em] text-[0.65rem] not-italic">
+                        {block.author}
+                      </cite>
+                    </footer>
+                  )}
+                </div>
+              </blockquote>
             );
 
           case 'list':
@@ -159,6 +183,17 @@ const ArticleDetail: React.FC = () => {
     }
   };
 
+  const shareOnLinkedIn = () => {
+    const url = encodeURIComponent(window.location.href);
+    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank');
+  };
+
+  const shareOnTwitter = () => {
+    const url = encodeURIComponent(window.location.href);
+    const text = encodeURIComponent(articleData.title);
+    window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
+  };
+
   return (
     <div className="min-h-screen bg-white pb-20">
       <SEO
@@ -220,8 +255,8 @@ const ArticleDetail: React.FC = () => {
                 </Link>
 
                 <div className="flex items-center gap-2">
-                  <button className="h-10 w-10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-900 rounded-xl transition-all border border-slate-100"><Twitter size={18} /></button>
-                  <button className="h-10 w-10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-900 rounded-xl transition-all border border-slate-100"><Linkedin size={18} /></button>
+                  <button onClick={shareOnTwitter} className="h-10 w-10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-900 rounded-xl transition-all border border-slate-100"><Twitter size={18} /></button>
+                  <button onClick={shareOnLinkedIn} className="h-10 w-10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-900 rounded-xl transition-all border border-slate-100"><Linkedin size={18} /></button>
                   <button className="h-10 w-10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-900 rounded-xl transition-all border border-slate-100"><Facebook size={18} /></button>
                   <div className="h-6 w-px bg-slate-100 mx-2"></div>
                   <button className="h-10 w-10 flex items-center justify-center text-slate-400 hover:text-garfield-600 hover:bg-garfield-50 rounded-xl transition-all border border-slate-100"><Bookmark size={18} /></button>
@@ -241,10 +276,22 @@ const ArticleDetail: React.FC = () => {
               <ContentRenderer blocks={articleData.content} />
 
               <div className="my-16 flex flex-col sm:flex-row items-center justify-center gap-4 py-12 border-y border-slate-100">
-                <span className="text-sm font-black text-slate-900 uppercase tracking-widest">¿Te ha gustado este artículo?</span>
-                <div className="flex gap-2">
-                  <button className="flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-900 text-white text-[0.65rem] font-black uppercase tracking-widest hover:bg-garfield-600 transition-all">Compartir en Twitter</button>
-                  <button className="flex items-center gap-2 px-6 py-3 rounded-xl border border-slate-200 text-slate-900 text-[0.65rem] font-black uppercase tracking-widest hover:bg-slate-50 transition-all">Guardar lectura</button>
+                <span className="text-sm font-black text-slate-900 uppercase tracking-widest text-center sm:text-left">¿Te ha gustado este artículo?</span>
+                <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                  <button
+                    onClick={shareOnLinkedIn}
+                    className="flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-slate-900 text-white text-[0.65rem] font-black uppercase tracking-widest hover:bg-indigo-600 transition-all shadow-lg active:scale-95"
+                  >
+                    <Linkedin size={16} />
+                    Compartir en LinkedIn
+                  </button>
+                  <Link
+                    to="/contact"
+                    className="flex items-center justify-center gap-3 px-8 py-4 rounded-xl border-2 border-slate-900 text-slate-900 text-[0.65rem] font-black uppercase tracking-widest hover:bg-slate-900 hover:text-white transition-all active:scale-95"
+                  >
+                    <MessageSquare size={16} />
+                    Consultoría Pro
+                  </Link>
                 </div>
               </div>
             </article>

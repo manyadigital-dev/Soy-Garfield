@@ -99,6 +99,55 @@ export const ARTICLES: Article[] = [
             { type: 'paragraph', text: 'La mayoría utiliza prompts simples como "Escribe un artículo sobre...". Un profesional utiliza técnicas de condicionamiento para obligar al modelo a razonar antes de escribir.' },
             { type: 'code', code: '# Prompt de Alta Fidelidad\nActúa como un experto en SEO semántico.\nTAREA: Analiza la intención de búsqueda de "[KEYWORD]".\nPASOS:\n1. Identifica las LSI keywords.\n2. Crea una estructura de silos.\n3. Escribe siguiendo el tono de [MARCA].\nRESTRICCIÓN: No uses adverbios terminados en -mente.', language: 'markdown' }
         ]
+    },
+    {
+        id: 'coste-seo-wordpress-lento-ia',
+        title: 'El coste SEO oculto de un WordPress lento (y cómo afecta a la visibilidad en IA)',
+        excerpt: 'La velocidad de tu web ya no solo impacta en SEO: ahora decide si la IA te muestra… o te ignora. Descubre por qué un WordPress lento te está haciendo invisible.',
+        author: 'Pietro Fiorillo',
+        date: '30 Ene, 2024',
+        category: Category.SEO,
+        readTime: '12 min de lectura',
+        imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&auto=format&fit=crop&q=80',
+        isFeatured: true,
+        content: [
+            { type: 'paragraph', text: 'El problema no es que tu web sea lenta. El problema es todo lo que pierdes por no saberlo. Si tienes un WordPress del que estás orgulloso —buen diseño, buen contenido, buena propuesta— pero carga despacio, hoy estás pagando un precio doble: menos SEO y menos visibilidad en buscadores con IA.' },
+            { type: 'heading', level: 2, text: 'Qué está pasando: la velocidad vuelve al centro del SEO (otra vez)' },
+            { type: 'paragraph', text: 'Desde 2020, con la llegada de Core Web Vitals, Google convirtió el rendimiento web en factor oficial de ranking. No como un bonus, sino como un requisito mínimo. Hoy, Google mide tres métricas clave:' },
+            {
+                type: 'list',
+                items: [
+                    'LCP (Largest Contentful Paint): cuándo carga el contenido principal.',
+                    'CLS (Cumulative Layout Shift): estabilidad visual.',
+                    'INP/FID: capacidad de interacción.'
+                ]
+            },
+            { type: 'quote', text: 'Solo el 50 % de los sitios WordPress cumple los estándares mínimos de Core Web Vitals. Esto significa que la mayoría de webs compiten con desventaja.', author: 'Pietro Fiorillo' },
+            { type: 'heading', level: 2, text: 'Por qué importa: velocidad = tráfico, conversiones… y ahora IA' },
+            { type: 'paragraph', text: 'Los usuarios no esperan. Según estudios de Google, pasar de 1 a 3 segundos de carga aumenta el rebote un 32%. A los 5 segundos, la probabilidad de rebote sube hasta el 90%.' },
+            { type: 'heading', level: 3, text: 'La velocidad también afecta a la visibilidad en IA' },
+            { type: 'paragraph', text: 'Un estudio reciente de SE Ranking analizó más de 129.000 dominios para entender qué influye en las citaciones de ChatGPT. Las páginas rápidas (FCP < 0,4 s) obtuvieron 6,7 citaciones de media, mientras que las lentas (FCP > 1,1 s) solo 2,1 citaciones. Tres veces menos visibilidad solo por velocidad.' },
+            { type: 'quote', text: 'La IA no “castiga” webs lentas, simplemente no las prioriza como fuente fiable.', author: 'Pietro Fiorillo' },
+            { type: 'heading', level: 2, text: 'Análisis profundo: por qué la IA prefiere webs rápidas' },
+            {
+                type: 'checklist',
+                items: [
+                    'La IA necesita contenido accesible y rápido: rinde mejor al rastrear sistemas eficientes.',
+                    'Core Web Vitals actúa como señal de calidad: la IA hereda los criterios de Google.',
+                    'Discover y la búsqueda generativa van de la mano: el engagement depende de la velocidad.'
+                ]
+            },
+            { type: 'heading', level: 2, text: 'Qué hacer al respecto: roadmap realista para acelerar WordPress' },
+            {
+                type: 'list',
+                items: [
+                    'Paso 1: Audita tu velocidad actual usando PageSpeed Insights.',
+                    'Paso 2: Detecta los cuellos de botella (imágenes, plugins pesados, JS bloqueante).',
+                    'Paso 3: Simplifica la optimización usando soluciones integrales de rendimiento.'
+                ]
+            },
+            { type: 'paragraph', text: 'Un WordPress lento ya no solo pierde posiciones en Google. Pierde relevancia en la era de la IA. Mejorar la velocidad hoy es mejorar tu visibilidad futura.' }
+        ]
     }
 ];
 
