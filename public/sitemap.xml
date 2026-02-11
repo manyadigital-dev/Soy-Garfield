@@ -1,11 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <!-- Core Pages -->
   <url>
     <loc>https://soygarfield.com/</loc>
     <lastmod>2026-02-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
+  <url>
+    <loc>https://soygarfield.com/authors</loc>
+    <lastmod>2026-02-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://soygarfield.com/contact</loc>
+    <lastmod>2026-02-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://soygarfield.com/write</loc>
+    <lastmod>2026-02-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://soygarfield.com/sitemap</loc>
+    <lastmod>2026-02-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+  <!-- Categories -->
   <url>
     <loc>https://soygarfield.com/category/seo</loc>
     <lastmod>2026-02-11</lastmod>
@@ -18,46 +46,78 @@
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
+
+  <!-- Authors -->
   <url>
     <loc>https://soygarfield.com/author/pietro-fiorillo</loc>
     <lastmod>2026-02-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
-  <url>
-    <loc>https://soygarfield.com/contact</loc>
-    <lastmod>2026-02-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
+
+  <!-- Articles with Image Metadata -->
   <url>
     <loc>https://soygarfield.com/article/sge-google-2025</loc>
     <lastmod>2026-02-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1614850523296-d8c1af93d400?q=80&amp;w=2070&amp;auto=format&amp;fit=crop</image:loc>
+      <image:title>SGE y el fin de los 10 enlaces azules</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://soygarfield.com/article/agentes-ia-marketing</loc>
     <lastmod>2026-02-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&amp;w=2070&amp;auto=format&amp;fit=crop</image:loc>
+      <image:title>Agentes de IA: Más allá de los Chatbots</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://soygarfield.com/article/eeat-branding-personal</loc>
     <lastmod>2026-02-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1557426272-fc759fdf7a8d?w=1200&amp;auto=format&amp;fit=crop&amp;q=80</image:loc>
+      <image:title>E-E-A-T y Marca Personal</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://soygarfield.com/article/prompt-engineering-seo</loc>
     <lastmod>2026-02-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1555099962-4199c345e5dd?w=1200&amp;auto=format&amp;fit=crop&amp;q=80</image:loc>
+      <image:title>Prompt Engineering Avanzado para SEO</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://soygarfield.com/article/coste-seo-wordpress-lento-ia</loc>
     <lastmod>2026-02-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&amp;auto=format&amp;fit=crop&amp;q=80</image:loc>
+      <image:title>El coste SEO oculto de un WordPress lento</image:title>
+    </image:image>
+  </url>
+
+  <!-- Legal -->
+  <url>
+    <loc>https://soygarfield.com/privacy</loc>
+    <lastmod>2026-02-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://soygarfield.com/terms</loc>
+    <lastmod>2026-02-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
   </url>
 </urlset>
