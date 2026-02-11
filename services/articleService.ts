@@ -54,6 +54,7 @@ export const getArticleBySlug = async (slug: string): Promise<Article | null> =>
     "imageUrl": mainImage.asset->url,
     "seoTitle": coalesce(seoTitle, title),
     "seoDescription": coalesce(seoDescription, excerpt),
+    "modifiedDate": _updatedAt,
     isFeatured,
     content
   }`;

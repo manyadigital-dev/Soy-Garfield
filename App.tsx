@@ -16,12 +16,33 @@ import AuthorDetail from './pages/AuthorDetail';
 import Authors from './pages/Authors';
 import { Navigate } from 'react-router-dom';
 
-// ScrollToTop component to handle scroll behavior on route change
-const ScrollToTop = () => {
+// ScrollToTop and Reveal observer
+const AppEffects = () => {
   const { pathname } = useLocation();
+
   React.useEffect(() => {
     window.scrollTo(0, 0);
+
+    // Reveal on scroll logic
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, observerOptions);
+
+    const revealElements = document.querySelectorAll('.reveal');
+    revealElements.forEach(el => observer.observe(el));
+
+    return () => observer.disconnect();
   }, [pathname]);
+
   return null;
 };
 
@@ -29,7 +50,7 @@ const App: React.FC = () => {
   return (
     <HelmetProvider>
       <Router>
-        <ScrollToTop />
+        <AppEffects />
         <div className="flex min-h-screen flex-col bg-white font-sans text-slate-900">
           <Navbar />
           <div className="flex-grow">

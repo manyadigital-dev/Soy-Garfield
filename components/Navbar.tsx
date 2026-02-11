@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { NavItem } from '../types';
 import pietroLogo from '../assets/pietro.png';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const navItems: NavItem[] = [
   { label: 'SEO', path: '/category/seo' },
@@ -143,108 +144,139 @@ const Navbar: React.FC = () => {
       </header>
 
       {/* FULL SCREEN MOBILE OVERLAY */}
-      <div
-        className={`fixed inset-0 z-[140] bg-white lg:hidden transition-all duration-500 flex flex-col ${isOpen
-          ? 'opacity-100 pointer-events-auto visible'
-          : 'opacity-0 pointer-events-none invisible'
-          }`}
-      >
-        {/* Safe Area / Top Spacer */}
-        <div className="h-24 sm:h-28 flex-shrink-0"></div>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, x: '100%' }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="fixed inset-0 z-[140] bg-white lg:hidden flex flex-col"
+          >
+            {/* Safe Area / Top Spacer */}
+            <div className="h-24 sm:h-28 flex-shrink-0"></div>
 
-        <div className="flex-grow overflow-y-auto px-6 pb-24">
-          <div className="mx-auto max-w-lg">
-            {/* Author Card */}
-            <div className="bg-slate-50 rounded-[2.5rem] p-6 mb-8 border border-slate-100 relative overflow-hidden shadow-sm">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-garfield-500/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
-              <div className="flex items-center gap-5 relative z-10">
-                <div className="h-16 w-16 overflow-hidden rounded-3xl border-4 border-white shadow-xl flex-shrink-0">
-                  <img src={pietroLogo} alt="Pietro" className="h-full w-full object-cover" />
-                </div>
-                <div className="min-w-0">
-                  <div className="text-xl font-black text-slate-900 leading-tight">
-                    Pietro <span className="text-garfield-600">Garfield</span>
-                  </div>
-                  <div className="text-[0.6rem] font-black uppercase tracking-widest text-slate-400 mt-1 truncate">
-                    SEO & IA Architect
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Mobile Search Input */}
-            <div className="relative mb-8">
-              <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-              <input
-                type="text"
-                placeholder="¿Qué quieres aprender hoy?"
-                className="w-full bg-slate-50 border border-slate-100 rounded-3xl py-5 pl-14 pr-6 text-sm font-bold placeholder-slate-400 focus:bg-white focus:ring-2 focus:ring-garfield-500 transition-all outline-none shadow-sm"
-              />
-            </div>
-
-            {/* Navigation Sections */}
-            <div className="grid grid-cols-1 gap-3 mb-10">
-              <Link to="/" onClick={() => setIsOpen(false)} className="flex items-center justify-between p-5 rounded-3xl bg-slate-50 border border-transparent hover:border-slate-100 transition-all group">
-                <div className="flex items-center gap-4">
-                  <div className="p-2.5 bg-white rounded-2xl shadow-sm text-slate-900 group-hover:text-garfield-600 transition-colors">
-                    <Home size={20} />
-                  </div>
-                  <span className="text-xs font-black uppercase tracking-[0.2em] text-slate-900">Inicio</span>
-                </div>
-                <ChevronRight size={16} className="text-slate-300 group-hover:text-garfield-600 transition-all group-hover:translate-x-1" />
-              </Link>
-
-              {navItems.map((item) => (
-                <Link key={item.label} to={item.path} onClick={() => setIsOpen(false)} className="flex items-center justify-between p-5 rounded-3xl bg-slate-50 border border-transparent hover:border-slate-100 transition-all group">
-                  <div className="flex items-center gap-4">
-                    <div className="p-2.5 bg-white rounded-2xl shadow-sm text-slate-900 group-hover:text-garfield-600 transition-colors">
-                      {item.label === 'SEO' ? <Sparkles size={20} /> : <Zap size={20} />}
+            <div className="flex-grow overflow-y-auto px-6 pb-24">
+              <div className="mx-auto max-w-lg">
+                {/* Author Card */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="bg-slate-50 rounded-[2.5rem] p-6 mb-8 border border-slate-100 relative overflow-hidden shadow-sm"
+                >
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-garfield-500/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
+                  <div className="flex items-center gap-5 relative z-10">
+                    <div className="h-16 w-16 overflow-hidden rounded-3xl border-4 border-white shadow-xl flex-shrink-0">
+                      <img src={pietroLogo} alt="Pietro" className="h-full w-full object-cover" />
                     </div>
-                    <span className="text-xs font-black uppercase tracking-[0.2em] text-slate-900">{item.label}</span>
+                    <div className="min-w-0">
+                      <div className="text-xl font-black text-slate-900 leading-tight">
+                        Pietro <span className="text-garfield-600">Garfield</span>
+                      </div>
+                      <div className="text-[0.6rem] font-black uppercase tracking-widest text-slate-400 mt-1 truncate">
+                        SEO & IA Architect
+                      </div>
+                    </div>
                   </div>
-                  <ChevronRight size={16} className="text-slate-300 group-hover:text-garfield-600 transition-all group-hover:translate-x-1" />
-                </Link>
-              ))}
+                </motion.div>
 
-              <Link to="/author/pietro-fiorillo" onClick={() => setIsOpen(false)} className="flex items-center justify-between p-5 rounded-3xl bg-slate-50 border border-transparent hover:border-slate-100 transition-all group">
-                <div className="flex items-center gap-4">
-                  <div className="p-2.5 bg-white rounded-2xl shadow-sm text-slate-900 group-hover:text-garfield-600 transition-colors">
-                    <User size={20} />
+                {/* Mobile Search Input */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="relative mb-8"
+                >
+                  <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                  <input
+                    type="text"
+                    placeholder="¿Qué quieres aprender hoy?"
+                    className="w-full bg-slate-50 border border-slate-100 rounded-3xl py-5 pl-14 pr-6 text-sm font-bold placeholder-slate-400 focus:bg-white focus:ring-2 focus:ring-garfield-500 transition-all outline-none shadow-sm"
+                  />
+                </motion.div>
+
+                {/* Navigation Sections */}
+                <div className="grid grid-cols-1 gap-3 mb-10">
+                  <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.4 }}>
+                    <Link to="/" onClick={() => setIsOpen(false)} className="flex items-center justify-between p-5 rounded-3xl bg-slate-50 border border-transparent hover:border-slate-100 transition-all group">
+                      <div className="flex items-center gap-4">
+                        <div className="p-2.5 bg-white rounded-2xl shadow-sm text-slate-900 group-hover:text-garfield-600 transition-colors">
+                          <Home size={20} />
+                        </div>
+                        <span className="text-xs font-black uppercase tracking-[0.2em] text-slate-900">Inicio</span>
+                      </div>
+                      <ChevronRight size={16} className="text-slate-300 group-hover:text-garfield-600 transition-all group-hover:translate-x-1" />
+                    </Link>
+                  </motion.div>
+
+                  {navItems.map((item, idx) => (
+                    <motion.div
+                      key={item.label}
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.5 + (idx * 0.1) }}
+                    >
+                      <Link to={item.path} onClick={() => setIsOpen(false)} className="flex items-center justify-between p-5 rounded-3xl bg-slate-50 border border-transparent hover:border-slate-100 transition-all group">
+                        <div className="flex items-center gap-4">
+                          <div className="p-2.5 bg-white rounded-2xl shadow-sm text-slate-900 group-hover:text-garfield-600 transition-colors">
+                            {item.label === 'SEO' ? <Sparkles size={20} /> : <Zap size={20} />}
+                          </div>
+                          <span className="text-xs font-black uppercase tracking-[0.2em] text-slate-900">{item.label}</span>
+                        </div>
+                        <ChevronRight size={16} className="text-slate-300 group-hover:text-garfield-600 transition-all group-hover:translate-x-1" />
+                      </Link>
+                    </motion.div>
+                  ))}
+
+                  <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.7 }}>
+                    <Link to="/author/pietro-fiorillo" onClick={() => setIsOpen(false)} className="flex items-center justify-between p-5 rounded-3xl bg-slate-50 border border-transparent hover:border-slate-100 transition-all group">
+                      <div className="flex items-center gap-4">
+                        <div className="p-2.5 bg-white rounded-2xl shadow-sm text-slate-900 group-hover:text-garfield-600 transition-colors">
+                          <User size={20} />
+                        </div>
+                        <span className="text-xs font-black uppercase tracking-[0.2em] text-slate-900">Sobre Mí</span>
+                      </div>
+                      <ChevronRight size={16} className="text-slate-300 group-hover:text-garfield-600 transition-all group-hover:translate-x-1" />
+                    </Link>
+                  </motion.div>
+                </div>
+
+                {/* Social and Contact Info */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.8 }}
+                  className="mt-auto border-t border-slate-100 pt-8"
+                >
+                  <div className="flex items-center justify-between mb-8">
+                    <div className="flex gap-3">
+                      <a href="#" className="h-12 w-12 flex items-center justify-center rounded-2xl bg-slate-50 text-slate-400 hover:bg-slate-900 hover:text-white transition-all shadow-sm">
+                        <Linkedin size={20} />
+                      </a>
+                      <a href="#" className="h-12 w-12 flex items-center justify-center rounded-2xl bg-slate-50 text-slate-400 hover:bg-slate-900 hover:text-white transition-all shadow-sm">
+                        <Twitter size={20} />
+                      </a>
+                    </div>
+                    <Link to="/contact" onClick={() => setIsOpen(false)} className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-garfield-600 flex items-center gap-2">
+                      Consultoría <ArrowRight size={14} />
+                    </Link>
                   </div>
-                  <span className="text-xs font-black uppercase tracking-[0.2em] text-slate-900">Sobre Mí</span>
-                </div>
-                <ChevronRight size={16} className="text-slate-300 group-hover:text-garfield-600 transition-all group-hover:translate-x-1" />
-              </Link>
-            </div>
 
-            {/* Social and Contact Info */}
-            <div className="mt-auto border-t border-slate-100 pt-8">
-              <div className="flex items-center justify-between mb-8">
-                <div className="flex gap-3">
-                  <a href="#" className="h-12 w-12 flex items-center justify-center rounded-2xl bg-slate-50 text-slate-400 hover:bg-slate-900 hover:text-white transition-all shadow-sm">
-                    <Linkedin size={20} />
-                  </a>
-                  <a href="#" className="h-12 w-12 flex items-center justify-center rounded-2xl bg-slate-50 text-slate-400 hover:bg-slate-900 hover:text-white transition-all shadow-sm">
-                    <Twitter size={20} />
-                  </a>
-                </div>
-                <Link to="/contact" onClick={() => setIsOpen(false)} className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-garfield-600 flex items-center gap-2">
-                  Consultoría <ArrowRight size={14} />
-                </Link>
+                  <Link
+                    to="/contact"
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center justify-center gap-3 w-full bg-slate-900 py-5 rounded-3xl text-white font-black uppercase tracking-[0.2em] text-[0.7rem] shadow-2xl shadow-slate-900/10 active:scale-95 transition-all"
+                  >
+                    <MessageSquare size={18} />
+                    Agendar una llamada
+                  </Link>
+                </motion.div>
               </div>
-
-              <Link
-                to="/contact"
-                onClick={() => setIsOpen(false)}
-                className="flex items-center justify-center gap-3 w-full bg-slate-900 py-5 rounded-3xl text-white font-black uppercase tracking-[0.2em] text-[0.7rem] shadow-2xl shadow-slate-900/10 active:scale-95 transition-all"
-              >
-                <MessageSquare size={18} />
-                Agendar una llamada
-              </Link>
             </div>
-          </div>
-        </div>
-      </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* FLOATING MOBILE NAV BAR - Hidden when menu is open */}
       <nav className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-[110] w-[90%] max-w-md h-16 bg-slate-900/90 backdrop-blur-2xl rounded-[2rem] lg:hidden flex items-center justify-around px-2 shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-white/10 transition-all duration-300 ${isOpen ? 'translate-y-32 opacity-0' : 'translate-y-0 opacity-100'}`}>

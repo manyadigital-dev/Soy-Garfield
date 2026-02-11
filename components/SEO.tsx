@@ -29,13 +29,20 @@ const SEO: React.FC<SEOProps> = ({
 }) => {
     const { pathname } = useLocation();
     const siteName = 'Soy Garfield';
+    const siteSuffix = 'Divulgador SEO & IA';
+    const fullBrandName = `${siteName} | ${siteSuffix}`;
     const baseUrl = 'https://soygarfield.com';
     const fullUrl = `${baseUrl}${pathname}`;
 
     const defaultDescription = 'Consultoría estratégica de SEO e Inteligencia Artificial. Domina el futuro digital con Pietro Fiorillo.';
     const defaultImage = `${baseUrl}/pietro-og.png`;
 
-    const seoTitle = title ? `${title} | ${siteName}` : `${siteName} | SEO & IA Expert`;
+    // Branding logic:
+    // 1. Home / No Title -> "Soy Garfield | Divulgador SEO & IA"
+    // 2. Other pages -> "Title | Soy Garfield | Divulgador SEO & IA"
+    const seoTitle = !title || title === siteName || title === fullBrandName
+        ? fullBrandName
+        : `${title} | ${fullBrandName}`;
     const seoDescription = description || defaultDescription;
 
     let seoImage = image || defaultImage;

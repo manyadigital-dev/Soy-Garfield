@@ -116,7 +116,22 @@ export const article = defineType({
             group: 'content',
             of: [
                 { type: 'block' },
-                { type: 'image', options: { hotspot: true } },
+                {
+                    type: 'image',
+                    options: { hotspot: true },
+                    fields: [
+                        {
+                            name: 'alt',
+                            type: 'string',
+                            title: 'Texto alternativo',
+                        },
+                        {
+                            name: 'caption',
+                            type: 'string',
+                            title: 'Leyenda / Caption',
+                        }
+                    ]
+                },
                 {
                     type: 'object',
                     name: 'codeBlock',
@@ -141,6 +156,80 @@ export const article = defineType({
                     title: 'Lista de verificación',
                     fields: [
                         { name: 'items', title: 'Elementos', type: 'array', of: [{ type: 'string' }] }
+                    ]
+                },
+                {
+                    type: 'object',
+                    name: 'table',
+                    title: 'Tabla',
+                    fields: [
+                        {
+                            name: 'rows',
+                            title: 'Filas',
+                            type: 'array',
+                            of: [
+                                {
+                                    type: 'object',
+                                    name: 'row',
+                                    fields: [
+                                        {
+                                            name: 'cells',
+                                            title: 'Celdas',
+                                            type: 'array',
+                                            of: [{ type: 'string' }]
+                                        },
+                                        {
+                                            name: 'isHeader',
+                                            title: 'Es encabezado',
+                                            type: 'boolean',
+                                            initialValue: false
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    type: 'object',
+                    name: 'cta',
+                    title: 'Llamada a la acción (CTA)',
+                    fields: [
+                        { name: 'title', title: 'Título', type: 'string' },
+                        { name: 'text', title: 'Texto', type: 'text' },
+                        { name: 'buttonText', title: 'Texto del botón', type: 'string' },
+                        { name: 'url', title: 'URL del botón', type: 'string' }
+                    ]
+                },
+                {
+                    type: 'object',
+                    name: 'newsletter',
+                    title: 'Bloque de Newsletter',
+                    fields: [
+                        { name: 'title', title: 'Título', type: 'string', initialValue: 'Estrategia Semanal' },
+                        { name: 'description', title: 'Descripción', type: 'string', initialValue: 'Únete a +75,000 lectores' }
+                    ]
+                },
+                {
+                    type: 'object',
+                    name: 'youtube',
+                    title: 'Video de YouTube',
+                    fields: [
+                        { name: 'url', title: 'URL de YouTube', type: 'url' }
+                    ]
+                },
+                {
+                    type: 'object',
+                    name: 'divider',
+                    title: 'Separador',
+                    fields: [
+                        {
+                            name: 'style',
+                            title: 'Estilo',
+                            type: 'string',
+                            options: { list: ['line', 'dots', 'gradient'] },
+                            initialValue: 'line'
+                        }
                     ]
                 }
             ],

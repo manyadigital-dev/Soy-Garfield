@@ -7,6 +7,7 @@ import { Clock, Calendar, Linkedin, Twitter, Facebook, Bookmark, ArrowRight, Lis
 import pietroPhoto from '../assets/pietro.png';
 import SEO from '../components/SEO';
 import { PortableText } from '@portabletext/react';
+import { urlFor } from '../services/sanity';
 
 const portableTextComponents = {
   block: {
@@ -15,12 +16,16 @@ const portableTextComponents = {
     normal: ({ children }: any) => <p className="text-xl text-slate-600 mb-8 font-medium leading-relaxed">{children}</p>,
   },
   types: {
-    image: ({ value }: any) => (
-      <figure className="my-12">
-        <img src={value.asset ? value.asset.url : ''} alt={value.alt || ''} className="w-full rounded-[2.5rem] shadow-xl" />
-        {value.caption && <figcaption className="mt-4 text-center text-sm text-slate-400 font-medium italic">{value.caption}</figcaption>}
-      </figure>
-    ),
+    image: ({ value }: any) => {
+      const imageUrl = urlFor(value)?.url();
+      if (!imageUrl) return null;
+      return (
+        <figure className="my-12">
+          <img src={imageUrl} alt={value.alt || ''} className="w-full rounded-[2.5rem] shadow-xl" />
+          {value.caption && <figcaption className="mt-4 text-center text-sm text-slate-400 font-medium italic">{value.caption}</figcaption>}
+        </figure>
+      );
+    },
     quote: ({ value }: any) => (
       <blockquote className="my-16 px-8 sm:px-12 py-14 bg-slate-900 rounded-[3rem] text-white overflow-hidden relative shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] group">
         <div className="absolute top-0 right-0 -mt-12 -mr-12 h-40 w-40 bg-garfield-500 rounded-full opacity-20 blur-[60px] transition-all group-hover:opacity-30 group-hover:scale-110"></div>
@@ -59,7 +64,85 @@ const portableTextComponents = {
       <div className="my-8 bg-slate-900 rounded-3xl p-8 font-mono text-sm text-garfield-400 overflow-x-auto shadow-2xl">
         <pre><code>{value.code}</code></pre>
       </div>
-    )
+    ),
+    table: ({ value }: any) => (
+      <div className="my-12 overflow-hidden border border-slate-100 rounded-[2.5rem] shadow-xl">
+        <table className="w-full text-left border-collapse">
+          <tbody>
+            {value.rows.map((row: any, i: number) => (
+              <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'}>
+                {row.cells.map((cell: string, j: number) => (
+                  row.isHeader ? (
+                    <th key={j} className="p-5 text-[0.65rem] font-black uppercase tracking-widest text-slate-400 border-b border-slate-100">
+                      {cell}
+                    </th>
+                  ) : (
+                    <td key={j} className="p-5 text-sm font-bold text-slate-700 border-b border-slate-100">
+                      {cell}
+                    </td>
+                  )
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    ),
+    cta: ({ value }: any) => (
+      <div className="my-16 bg-slate-900 rounded-[3rem] p-12 text-white shadow-2xl relative overflow-hidden group">
+        <div className="absolute top-0 right-0 -mt-20 -mr-20 h-64 w-64 bg-garfield-500 rounded-full opacity-10 blur-3xl transition-all group-hover:opacity-20"></div>
+        <div className="relative z-10">
+          <h4 className="text-3xl font-black mb-4 leading-tight">{value.title}</h4>
+          <p className="text-slate-400 font-medium mb-10 max-w-xl">{value.text}</p>
+          <a
+            href={value.url}
+            className="inline-flex items-center gap-3 bg-garfield-500 hover:bg-white hover:text-slate-900 px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-xs transition-all shadow-xl shadow-garfield-500/20 active:scale-95"
+          >
+            {value.buttonText} <ArrowRight size={18} />
+          </a>
+        </div>
+      </div>
+    ),
+    newsletter: ({ value }: any) => (
+      <div className="my-12 bg-garfield-50 rounded-[2.5rem] p-10 border border-garfield-100">
+        <h4 className="text-xl font-black text-slate-900 mb-2">{value.title || 'Estrategia Semanal'}</h4>
+        <p className="text-xs text-garfield-600 font-bold mb-8 uppercase tracking-widest">{value.description || 'Únete a +75,000 lectores'}</p>
+        <form className="flex flex-col sm:flex-row gap-4">
+          <input type="email" placeholder="Email profesional" className="flex-grow bg-white border-transparent rounded-2xl px-6 py-4 text-xs font-bold focus:ring-2 focus:ring-garfield-500 outline-none shadow-sm" />
+          <button className="bg-slate-900 text-white px-8 py-4 rounded-2xl text-[0.6rem] font-black uppercase tracking-[0.2em] hover:bg-garfield-600 transition-colors shadow-xl">Suscribirse</button>
+        </form>
+      </div>
+    ),
+    youtube: ({ value }: any) => {
+      const url = value.url;
+      const getYouTubeId = (url: string) => {
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        const match = url.match(regExp);
+        return (match && match[2].length === 11) ? match[2] : null;
+      };
+      const id = getYouTubeId(url);
+      if (!id) return null;
+      return (
+        <div className="my-12 aspect-video w-full rounded-[2.5rem] overflow-hidden shadow-2xl">
+          <iframe
+            className="w-full h-full"
+            src={`https://www.youtube.com/embed/${id}`}
+            title="YouTube video player"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
+        </div>
+      );
+    },
+    divider: ({ value }: any) => {
+      if (value.style === 'dots') {
+        return <div className="my-16 flex justify-center gap-3 text-slate-200"><div className="h-1.5 w-1.5 rounded-full bg-current"></div><div className="h-1.5 w-1.5 rounded-full bg-current"></div><div className="h-1.5 w-1.5 rounded-full bg-current"></div></div>;
+      }
+      if (value.style === 'gradient') {
+        return <div className="my-16 h-px w-full bg-gradient-to-r from-transparent via-garfield-500/30 to-transparent"></div>;
+      }
+      return <div className="my-16 h-px w-full bg-slate-100"></div>;
+    }
   }
 };
 
@@ -183,7 +266,7 @@ const ArticleDetail: React.FC = () => {
       }
     },
     "datePublished": isoDate,
-    "dateModified": isoDate,
+    "dateModified": articleData.modifiedDate || isoDate,
     "description": articleData.seoDescription || articleData.excerpt,
     "isAccessibleForFree": "True",
     "mainEntityOfPage": {
@@ -199,10 +282,21 @@ const ArticleDetail: React.FC = () => {
     window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank');
   };
 
-  const shareOnTwitter = () => {
+  const shareOnX = () => {
     const url = encodeURIComponent(window.location.href);
     const text = encodeURIComponent(articleData.title);
     window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
+  };
+
+  const shareOnFacebook = () => {
+    const url = encodeURIComponent(window.location.href);
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+  };
+
+  const shareOnWhatsApp = () => {
+    const url = encodeURIComponent(window.location.href);
+    const text = encodeURIComponent(articleData.title);
+    window.open(`https://api.whatsapp.com/send?text=${text}%20${url}`, '_blank');
   };
 
   return (
@@ -278,16 +372,31 @@ const ArticleDetail: React.FC = () => {
                   </div>
                 </Link>
 
-                <div className="flex items-center gap-2">
-                  {articleData.authorTwitter && (
-                    <a href={articleData.authorTwitter} target="_blank" rel="noopener noreferrer" className="h-10 w-10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-900 rounded-xl transition-all border border-slate-100"><Twitter size={18} /></a>
-                  )}
-                  {articleData.authorLinkedIn && (
-                    <a href={articleData.authorLinkedIn} target="_blank" rel="noopener noreferrer" className="h-10 w-10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-900 rounded-xl transition-all border border-slate-100"><Linkedin size={18} /></a>
-                  )}
-                  <button className="h-10 w-10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-900 rounded-xl transition-all border border-slate-100"><Facebook size={18} /></button>
-                  <div className="h-6 w-px bg-slate-100 mx-2"></div>
-                  <button className="h-10 w-10 flex items-center justify-center text-slate-400 hover:text-garfield-600 hover:bg-garfield-50 rounded-xl transition-all border border-slate-100"><Bookmark size={18} /></button>
+                <div className="flex items-center gap-2 p-1.5 bg-slate-50/50 rounded-2xl border border-slate-100">
+                  <button onClick={shareOnFacebook} className="h-9 w-9 flex items-center justify-center text-slate-400 hover:text-white hover:bg-[#1877F2] rounded-xl transition-all" title="Compartir en Facebook">
+                    <Facebook size={16} />
+                  </button>
+                  <button onClick={shareOnLinkedIn} className="h-9 w-9 flex items-center justify-center text-slate-400 hover:text-white hover:bg-[#0A66C2] rounded-xl transition-all" title="Compartir en LinkedIn">
+                    <Linkedin size={16} />
+                  </button>
+                  <button
+                    onClick={shareOnWhatsApp}
+                    className="h-9 w-9 flex items-center justify-center text-slate-400 hover:text-white hover:bg-[#25D366] rounded-xl transition-all"
+                    title="Compartir en WhatsApp"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+                    </svg>
+                  </button>
+                  <button
+                    onClick={shareOnX}
+                    className="h-9 w-9 flex items-center justify-center text-slate-400 hover:text-white hover:bg-black rounded-xl transition-all"
+                    title="Compartir en X"
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                    </svg>
+                  </button>
                 </div>
               </div>
             </header>
@@ -303,19 +412,46 @@ const ArticleDetail: React.FC = () => {
             <article className="max-w-none">
               <PortableText value={articleData.content as any} components={portableTextComponents} />
 
-              <div className="my-16 flex flex-col sm:flex-row items-center justify-center gap-4 py-12 border-y border-slate-100">
-                <span className="text-sm font-black text-slate-900 uppercase tracking-widest text-center sm:text-left">¿Te ha gustado este artículo?</span>
-                <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                  <button
-                    onClick={shareOnLinkedIn}
-                    className="flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-slate-900 text-white text-[0.65rem] font-black uppercase tracking-widest hover:bg-indigo-600 transition-all shadow-lg active:scale-95"
-                  >
-                    <Linkedin size={16} />
-                    Compartir en LinkedIn
-                  </button>
+              <div className="my-16 py-12 border-y border-slate-100 flex flex-col lg:flex-row items-center justify-between gap-8">
+                <div className="flex flex-col items-center lg:items-start">
+                  <span className="text-xs font-black text-slate-400 uppercase tracking-[0.3em] mb-2">Feedback</span>
+                  <h4 className="text-xl font-black text-slate-900 uppercase tracking-tight">¿Te ha gustado este artículo?</h4>
+                </div>
+
+                <div className="flex flex-wrap items-center justify-center gap-4">
+                  {/* Share Group */}
+                  <div className="flex items-center bg-slate-50 border border-slate-100 p-1.5 rounded-2xl shadow-sm">
+                    <button
+                      onClick={shareOnX}
+                      className="h-11 w-11 flex items-center justify-center rounded-xl text-slate-400 hover:text-white hover:bg-black transition-all"
+                      title="Compartir en X"
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                      </svg>
+                    </button>
+                    <button
+                      onClick={shareOnLinkedIn}
+                      className="h-11 w-11 flex items-center justify-center rounded-xl text-slate-400 hover:text-white hover:bg-[#0A66C2] transition-all"
+                      title="Compartir en LinkedIn"
+                    >
+                      <Linkedin size={18} />
+                    </button>
+                    <button
+                      onClick={shareOnWhatsApp}
+                      className="h-11 w-11 flex items-center justify-center rounded-xl text-slate-400 hover:text-white hover:bg-[#25D366] transition-all"
+                      title="Compartir en WhatsApp"
+                    >
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+                      </svg>
+                    </button>
+                  </div>
+
+                  {/* CTA Group */}
                   <Link
                     to="/contact"
-                    className="flex items-center justify-center gap-3 px-8 py-4 rounded-xl border-2 border-slate-900 text-slate-900 text-[0.65rem] font-black uppercase tracking-widest hover:bg-slate-900 hover:text-white transition-all active:scale-95"
+                    className="flex items-center gap-3 px-8 py-4 rounded-2xl bg-slate-900 text-white text-[0.65rem] font-black uppercase tracking-widest hover:bg-garfield-600 transition-all shadow-xl shadow-slate-900/10 active:scale-95"
                   >
                     <MessageSquare size={16} />
                     Consultoría Pro

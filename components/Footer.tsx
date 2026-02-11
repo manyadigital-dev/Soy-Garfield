@@ -32,6 +32,11 @@ const Footer: React.FC = () => {
               <li><Link to="/category/ia" className="text-sm text-slate-500 hover:text-garfield-600 transition-colors">Inteligencia Artificial</Link></li>
               <li><Link to="/authors" className="text-sm text-slate-500 hover:text-garfield-600 transition-colors">Nuestro Equipo</Link></li>
               <li><Link to="/contact" className="text-sm text-slate-500 hover:text-garfield-600 transition-colors">Contacto</Link></li>
+              <li className="pt-2 border-t border-slate-50">
+                <a href="https://soygarfield.sanity.studio/" target="_blank" rel="noopener noreferrer" className="text-xs font-semibold text-garfield-600 hover:text-garfield-700 transition-colors flex items-center gap-1">
+                  Acceder al CMS →
+                </a>
+              </li>
             </ul>
           </div>
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { Article } from '../types';
 import { Clock, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 interface ArticleCardProps {
   article: Article;

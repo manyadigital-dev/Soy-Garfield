@@ -2,18 +2,30 @@ import React, { useState } from 'react';
 import { Mail, MapPin, Send, MessageSquare, CheckCircle, ArrowRight } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import SEO from '../components/SEO';
+import { getContactPageData, ContactPageData } from '../services/contactService';
 
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    subject: '',
+    phone: '',
+    company: '',
+    service: '',
     message: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [contactData, setContactData] = useState<ContactPageData | null>(null);
 
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const data = await getContactPageData();
+      if (data) setContactData(data);
+    };
+    fetchData();
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -55,18 +67,18 @@ const Contact: React.FC = () => {
   return (
     <div className="min-h-screen bg-white">
       <SEO
-        title="Contacto"
-        description="¿Tienes preguntas sobre SEO o IA? Ponte en contacto con Pietro Fiorillo para consultorías o colaboraciones."
+        title={contactData?.seoTitle || "Contacto"}
+        description={contactData?.seoDescription || "¿Tienes preguntas sobre SEO o IA? Ponte en contacto con Pietro Fiorillo para consultorías o colaboraciones."}
         schemaData={{
           "@context": "https://schema.org",
           "@type": "ContactPage",
           "name": "Contacto - Soy Garfield",
-          "description": "¿Tienes alguna pregunta sobre SEO, una propuesta de colaboración o simplemente quieres saludar?",
+          "description": contactData?.description || "¿Tienes alguna pregunta sobre SEO, una propuesta de colaboración o simplemente quieres saludar?",
           "url": "https://soygarfield.com/contact",
           "mainEntity": {
             "@type": "Person",
             "name": "Pietro Fiorillo",
-            "email": "hello@soygarfield.com",
+            "email": contactData?.email || "marketing@manyadigital.com.ar",
             "jobTitle": "SEO & IA Architect"
           }
         }}
@@ -78,11 +90,10 @@ const Contact: React.FC = () => {
             Ponte en contacto
           </span>
           <h1 className="text-4xl sm:text-6xl font-extrabold text-slate-900 tracking-tight mb-6">
-            Comencemos una conversación
+            {contactData?.title || "Comencemos una conversación"}
           </h1>
           <p className="text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed">
-            ¿Tienes alguna pregunta sobre SEO, una propuesta de colaboración o simplemente quieres saludar?
-            Nos encantaría saber de ti.
+            {contactData?.description || "¿Tienes alguna pregunta sobre SEO, una propuesta de colaboración o simplemente quieres saludar? Nos encantaría saber de ti."}
           </p>
         </div>
       </div>
@@ -106,23 +117,22 @@ const Contact: React.FC = () => {
                 <div>
                   <h3 className="font-bold text-slate-900 mb-1">Escríbenos</h3>
                   <p className="text-slate-500 text-sm mb-2">Para consultas generales y propuestas editoriales.</p>
-                  <a href="mailto:hello@soygarfield.com" className="text-garfield-600 font-semibold hover:text-garfield-700">
-                    hello@soygarfield.com
+                  <a href={`mailto:${contactData?.email || 'marketing@manyadigital.com.ar'}`} className="text-garfield-600 font-semibold hover:text-garfield-700">
+                    {contactData?.email || "marketing@manyadigital.com.ar"}
                   </a>
                 </div>
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 h-12 w-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600">
+                <div className="flex-shrink-0 h-12 w-12 rounded-xl bg-[#25D366]/10 flex items-center justify-center text-[#25D366]">
                   <MessageSquare size={24} />
                 </div>
                 <div>
-                  <h3 className="font-bold text-slate-900 mb-1">Redes Sociales</h3>
-                  <p className="text-slate-500 text-sm mb-2">Síguenos para actualizaciones en tiempo real.</p>
-                  <div className="flex gap-4">
-                    <a href="#" className="text-slate-400 hover:text-slate-900 transition-colors font-medium text-sm">Twitter</a>
-                    <a href="#" className="text-slate-400 hover:text-slate-900 transition-colors font-medium text-sm">LinkedIn</a>
-                  </div>
+                  <h3 className="font-bold text-slate-900 mb-1">WhatsApp</h3>
+                  <p className="text-slate-500 text-sm mb-2">Hablemos directamente por chat.</p>
+                  <a href={`https://wa.me/${(contactData?.phone || '541158578004').replace(/[\s\-\+]/g, '')}`} target="_blank" rel="noopener noreferrer" className="text-slate-900 font-semibold hover:text-garfield-600 transition-colors">
+                    {contactData?.phone || "+54 11 5857-8004"}
+                  </a>
                 </div>
               </div>
 
@@ -131,13 +141,14 @@ const Contact: React.FC = () => {
                   <MapPin size={24} />
                 </div>
                 <div>
-                  <h3 className="font-bold text-slate-900 mb-1">Ubicación</h3>
+                  <h3 className="font-bold text-slate-900 mb-1">Me encuentras en</h3>
                   <p className="text-slate-500 text-sm">
                     Nómada digital con base global.<br />
-                    Actualmente en: <span className="font-medium text-slate-900">Tokio, Japón</span>
+                    Actualmente en: <span className="font-medium text-slate-900">{contactData?.location || "Madrid, España"}</span>
                   </p>
                 </div>
               </div>
+
             </div>
 
             <div className="mt-12 p-8 bg-slate-900 rounded-2xl text-white relative overflow-hidden">
@@ -163,7 +174,7 @@ const Contact: React.FC = () => {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-2">Nombre</label>
+                  <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-2">Nombre completo</label>
                   <input
                     type="text"
                     name="name"
@@ -176,7 +187,7 @@ const Contact: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-2">Email</label>
+                  <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-2">Email corporativo</label>
                   <input
                     type="email"
                     name="email"
@@ -185,39 +196,70 @@ const Contact: React.FC = () => {
                     value={formData.email}
                     onChange={handleChange}
                     className="block w-full rounded-xl border-gray-200 bg-slate-50 px-4 py-3 text-slate-900 focus:border-garfield-500 focus:bg-white focus:ring-garfield-500 transition-all outline-none"
-                    placeholder="tu@empresa.com"
+                    placeholder="nombre@empresa.com"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <label htmlFor="phone" className="block text-sm font-medium text-slate-700 mb-2">Teléfono</label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    id="phone"
+                    required
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className="block w-full rounded-xl border-gray-200 bg-slate-50 px-4 py-3 text-slate-900 focus:border-garfield-500 focus:bg-white focus:ring-garfield-500 transition-all outline-none"
+                    placeholder="+54 ..."
+                  />
+                </div>
+                <div>
+                  <label htmlFor="company" className="block text-sm font-medium text-slate-700 mb-2">Empresa / Organización</label>
+                  <input
+                    type="text"
+                    name="company"
+                    id="company"
+                    required
+                    value={formData.company}
+                    onChange={handleChange}
+                    className="block w-full rounded-xl border-gray-200 bg-slate-50 px-4 py-3 text-slate-900 focus:border-garfield-500 focus:bg-white focus:ring-garfield-500 transition-all outline-none"
+                    placeholder="Nombre de tu empresa"
                   />
                 </div>
               </div>
 
               <div>
-                <label htmlFor="subject" className="block text-sm font-medium text-slate-700 mb-2">Asunto</label>
+                <label htmlFor="service" className="block text-sm font-medium text-slate-700 mb-2">Servicio de interés</label>
                 <select
-                  name="subject"
-                  id="subject"
-                  value={formData.subject}
+                  name="service"
+                  id="service"
+                  required
+                  value={formData.service}
                   onChange={handleChange}
                   className="block w-full rounded-xl border-gray-200 bg-slate-50 px-4 py-3 text-slate-900 focus:border-garfield-500 focus:bg-white focus:ring-garfield-500 transition-all outline-none appearance-none"
                 >
-                  <option value="" disabled>Selecciona un tema...</option>
-                  <option value="Editorial">Consulta Editorial</option>
-                  <option value="Partnership">Colaboración / Publicidad</option>
-                  <option value="Consulting">Consultoría SEO</option>
+                  <option value="" disabled>Seleccioná una opción</option>
+                  <option value="SEO">SEO (Optimización para buscadores)</option>
+                  <option value="IA">Inteligencia Artificial aplicada</option>
+                  <option value="Content">Estrategia de Contenidos</option>
+                  <option value="Ads">Google Ads / Performance</option>
                   <option value="Other">Otro</option>
                 </select>
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-slate-700 mb-2">Mensaje</label>
+                <label htmlFor="message" className="block text-sm font-medium text-slate-700 mb-2">Detalles del proyecto</label>
                 <textarea
                   name="message"
                   id="message"
-                  rows={6}
+                  rows={4}
                   required
                   value={formData.message}
                   onChange={handleChange}
                   className="block w-full rounded-xl border-gray-200 bg-slate-50 px-4 py-3 text-slate-900 focus:border-garfield-500 focus:bg-white focus:ring-garfield-500 transition-all outline-none resize-none"
-                  placeholder="¿En qué podemos ayudarte?"
+                  placeholder="Contanos brevemente sobre tus objetivos, audiencia y qué esperás lograr."
                 />
               </div>
 

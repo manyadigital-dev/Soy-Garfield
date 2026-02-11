@@ -122,6 +122,11 @@ const AuthorDetail: React.FC = () => {
                                         <Mail size={20} />
                                     </a>
                                 )}
+                                {author.socials?.instagram && (
+                                    <a href={author.socials.instagram} target="_blank" rel="noopener noreferrer" className="h-10 w-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-all text-white border border-white/10">
+                                        <Instagram size={20} />
+                                    </a>
+                                )}
                                 {author.socials?.twitter && (
                                     <a href={author.socials.twitter} target="_blank" rel="noopener noreferrer" className="h-10 w-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-all text-white border border-white/10">
                                         <Twitter size={20} />
@@ -194,32 +199,38 @@ const AuthorDetail: React.FC = () => {
             )}
 
             {/* --- EXTERNAL PUBLICATIONS --- */}
-            {author.externalPublications?.length > 0 && (
-                <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24">
-                    <h2 className="text-2xl font-bold text-slate-900 mb-10 border-b border-gray-100 pb-4 flex items-center gap-3">
-                        <FileText className="text-garfield-500" size={24} />
-                        Publicaciones en otros medios
-                    </h2>
+            {author.externalPublications && author.externalPublications.length > 0 && (
+                <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24 border-t border-slate-50">
+                    <h2 className="text-3xl font-black text-slate-900 mb-12 tracking-tight">Otras publicaciones externas</h2>
 
-                    <div className="space-y-6">
+                    <div className="grid gap-4 max-w-5xl">
                         {author.externalPublications.map((pub, i) => (
                             <a
                                 key={i}
                                 href={pub.link}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="group flex flex-col sm:flex-row sm:items-center justify-between p-6 rounded-2xl bg-white border border-gray-100 hover:border-garfield-200 hover:shadow-lg transition-all"
+                                className="group flex items-center justify-between p-4 px-6 rounded-2xl bg-slate-50/50 border border-slate-100/50 hover:bg-white hover:border-garfield-200 hover:shadow-xl hover:shadow-garfield-500/5 transition-all duration-300"
                             >
-                                <div className="mb-4 sm:mb-0">
-                                    <h3 className="text-xl font-bold text-slate-900 group-hover:text-garfield-600 transition-colors mb-1">{pub.title}</h3>
-                                    <div className="flex items-center gap-3 text-sm text-slate-500">
-                                        <span className="font-semibold text-slate-700">{pub.medium}</span>
-                                        <span>•</span>
-                                        <span>{pub.date}</span>
+                                <div className="flex items-center gap-6">
+                                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-slate-900 text-white font-black text-lg group-hover:bg-garfield-500 transition-colors shadow-lg">
+                                        {pub.medium.charAt(0)}
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <h3 className="text-lg font-bold text-slate-800 leading-tight group-hover:text-slate-900 transition-colors">{pub.title}</h3>
+                                        <div className="flex items-center gap-2 mt-1">
+                                            <span className="text-[0.65rem] font-black uppercase tracking-widest text-slate-400 group-hover:text-garfield-500 transition-colors">{pub.medium}</span>
+                                            {pub.date && (
+                                                <>
+                                                    <span className="text-slate-200">•</span>
+                                                    <span className="text-[0.65rem] font-bold text-slate-400">{pub.date}</span>
+                                                </>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-2 text-sm font-bold text-slate-400 group-hover:text-garfield-500 transition-colors uppercase tracking-widest">
-                                    Leer artículo <ExternalLink size={16} />
+                                <div className="text-slate-300 group-hover:text-garfield-500 transition-colors">
+                                    <ExternalLink size={20} />
                                 </div>
                             </a>
                         ))}
