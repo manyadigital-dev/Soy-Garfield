@@ -8,27 +8,33 @@ import pietroPhoto from '../assets/pietro.png';
 import SEO from '../components/SEO';
 import BreakingNewsTicker from '../components/BreakingNewsTicker';
 import { motion } from 'framer-motion';
+import { getHomePageData, HomePageData } from '../services/homeService';
 
 const Home: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'latest' | 'popular'>('latest');
   const [articles, setArticles] = useState<Article[]>([]);
+  const [homeData, setHomeData] = useState<HomePageData | null>(null);
   const [loading, setLoading] = useState(true);
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    const fetchArticles = async () => {
+    const fetchData = async () => {
       try {
-        const data = await getArticles();
-        setArticles(data);
+        const [articlesData, pageData] = await Promise.all([
+          getArticles(),
+          getHomePageData()
+        ]);
+        setArticles(articlesData);
+        setHomeData(pageData);
       } catch (error) {
-        console.error("Error fetching articles:", error);
+        console.error("Error fetching home data:", error);
       } finally {
         setLoading(false);
       }
     };
-    fetchArticles();
+    fetchData();
   }, []);
 
   const handleSubscribe = async (e: React.FormEvent) => {
@@ -82,8 +88,8 @@ const Home: React.FC = () => {
   return (
     <main className="min-h-screen bg-white font-sans text-slate-900 pb-20 lg:pb-0">
       <SEO
-        title="Soy Garfield | Divulgador SEO & IA"
-        description="El medio de referencia para dominar el futuro del marketing digital con noticias de última hora y estrategias avanzadas de IA."
+        title={homeData?.seoTitle || "Soy Garfield | Divulgador SEO & IA"}
+        description={homeData?.seoDescription || "El medio de referencia para dominar el futuro del marketing digital con noticias de última hora y estrategias avanzadas de IA."}
         schemaData={{
           "@context": "https://schema.org",
           "@graph": [
@@ -118,7 +124,7 @@ const Home: React.FC = () => {
       <BreakingNewsTicker />
 
       {/* Hidden H1 for SEO */}
-      <h1 className="sr-only">Noticias de SEO & IA</h1>
+      <h1 className="sr-only">{homeData?.heroTitle || "Noticias de SEO & IA"}</h1>
 
       {/* Top Stories Section */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 lg:py-12">
@@ -249,10 +255,10 @@ const Home: React.FC = () => {
 
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <h2 className="text-3xl sm:text-5xl font-black text-white leading-tight mb-6">
-            Domina el futuro con <span className="text-garfield-500">IA y SEO</span>
+            {homeData?.newsletterTitle || "Domina el futuro con IA y SEO"}
           </h2>
           <p className="text-lg text-slate-400 max-w-2xl mx-auto mb-10 font-medium">
-            Recibe semanalmente estrategias avanzadas directamente en tu bandeja de entrada.
+            {homeData?.newsletterDescription || "Recibe semanalmente estrategias avanzadas directamente en tu bandeja de entrada."}
           </p>
 
           <div className="max-w-2xl mx-auto">

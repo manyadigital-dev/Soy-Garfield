@@ -14,6 +14,8 @@ import TermsOfService from './pages/TermsOfService';
 import Sitemap from './pages/Sitemap';
 import AuthorDetail from './pages/AuthorDetail';
 import Authors from './pages/Authors';
+import Glossary from './pages/Glossary';
+import GlossaryDetail from './pages/GlossaryDetail';
 import { Navigate } from 'react-router-dom';
 
 // ScrollToTop and Reveal observer
@@ -67,6 +69,8 @@ const App: React.FC = () => {
               <Route path="/sitemap" element={<Sitemap />} />
               <Route path="/authors" element={<Authors />} />
               <Route path="/author/:slug" element={<AuthorDetail />} />
+              <Route path="/glosario" element={<Glossary />} />
+              <Route path="/glosario/:slug" element={<GlossaryDetail />} />
             </Routes>
           </div>
           <Footer />

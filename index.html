@@ -98,6 +98,91 @@
       transform: translateY(0);
     }
 
+    /* --- Premium Lists --- */
+    .prose ul {
+      list-style-type: none !important;
+      padding-left: 0 !important;
+    }
+
+    .prose ul li {
+      position: relative;
+      padding-left: 1.5rem;
+    }
+
+    .prose ul li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.6em;
+      height: 0.5rem;
+      width: 0.5rem;
+      background-color: #f97316;
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(249, 115, 22, 0.4);
+    }
+
+    .prose ol {
+      list-style-type: none !important;
+      padding-left: 0 !important;
+      counter-reset: custom-counter;
+    }
+
+    .prose ol li {
+      position: relative;
+      padding-left: 2rem;
+      counter-increment: custom-counter;
+    }
+
+    .prose ol li::before {
+      content: counter(custom-counter);
+      position: absolute;
+      left: 0;
+      top: 0.2em;
+      height: 1.4rem;
+      width: 1.4rem;
+      background-color: #f97316;
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      box-shadow: 0 4px 6px -1px rgba(249, 115, 22, 0.2);
+    }
+
+    /* --- Code Styles --- */
+    .prose code {
+      color: #ea580c !important;
+      background-color: #fff7ed !important;
+      padding: 0.2rem 0.4rem !important;
+      border-radius: 0.5rem !important;
+      font-weight: 700 !important;
+      font-size: 0.85em !important;
+      border: 1px solid rgba(249, 115, 22, 0.1) !important;
+    }
+
+    .prose pre {
+      background-color: #0d1117 !important;
+      color: #e2e8f0 !important;
+      border-radius: 1.5rem !important;
+      padding: 1.5rem !important;
+      margin: 2rem 0 !important;
+      overflow-x: auto;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+    }
+
+    .prose pre code {
+      color: inherit !important;
+      background-color: transparent !important;
+      padding: 0 !important;
+      border-radius: 0 !important;
+      font-weight: 400 !important;
+      font-size: 0.9em !important;
+      border: none !important;
+    }
+
     /* Custom scrollbar for webkit */
     ::-webkit-scrollbar {
       width: 10px;

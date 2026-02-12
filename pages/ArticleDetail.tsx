@@ -15,6 +15,46 @@ const portableTextComponents = {
     h3: ({ children }: any) => <h3 className="text-xl lg:text-2xl font-black text-slate-900 mt-10 mb-4 tracking-tight">{children}</h3>,
     normal: ({ children }: any) => <p className="text-xl text-slate-600 mb-8 font-medium leading-relaxed">{children}</p>,
   },
+  list: {
+    bullet: ({ children }: any) => <ul className="my-10 space-y-4 list-none">{children}</ul>,
+    number: ({ children }: any) => <ol className="my-10 space-y-6 list-none [counter-reset:section]">{children}</ol>,
+  },
+  listItem: {
+    bullet: ({ children }: any) => (
+      <li className="flex gap-4 text-xl text-slate-600 font-medium leading-relaxed group">
+        <div className="flex-shrink-0 mt-2.5 h-2 w-2 rounded-full bg-garfield-500 shadow-[0_0_8px_rgba(249,115,22,0.4)] transition-transform group-hover:scale-125"></div>
+        <span>{children}</span>
+      </li>
+    ),
+    number: ({ children }: any) => (
+      <li className="flex gap-5 text-xl text-slate-600 font-medium leading-relaxed group [counter-increment:section]">
+        <div className="flex-shrink-0 flex items-center justify-center h-10 w-10 rounded-xl bg-garfield-50 text-garfield-500 font-black text-sm border border-garfield-100 shadow-sm transition-all group-hover:bg-garfield-500 group-hover:text-white group-hover:shadow-lg group-hover:shadow-garfield-500/20 group-hover:-translate-y-0.5">
+          <span className="before:content-[counter(section)]"></span>
+        </div>
+        <div className="pt-1">{children}</div>
+      </li>
+    ),
+  },
+  marks: {
+    code: ({ children }: any) => (
+      <code className="px-2 py-0.5 rounded-lg bg-orange-50 text-garfield-600 font-bold border border-orange-100/50 text-[0.9em]">
+        {children}
+      </code>
+    ),
+    link: ({ value, children }: any) => {
+      const target = (value?.href || '').startsWith('http') ? '_blank' : undefined;
+      return (
+        <a
+          href={value?.href}
+          target={target}
+          rel={target === '_blank' ? 'noindex nofollow' : undefined}
+          className="text-slate-900 font-bold underline decoration-garfield-500/30 underline-offset-4 hover:decoration-garfield-500 hover:text-garfield-600 transition-all"
+        >
+          {children}
+        </a>
+      );
+    },
+  },
   types: {
     image: ({ value }: any) => {
       const imageUrl = urlFor(value)?.url();
@@ -61,8 +101,26 @@ const portableTextComponents = {
       </div>
     ),
     codeBlock: ({ value }: any) => (
-      <div className="my-8 bg-slate-900 rounded-3xl p-8 font-mono text-sm text-garfield-400 overflow-x-auto shadow-2xl">
-        <pre><code>{value.code}</code></pre>
+      <div className="my-10 relative group">
+        <div className="absolute -inset-2 bg-gradient-to-r from-garfield-500/10 to-indigo-500/10 rounded-[2rem] blur-xl opacity-0 group-hover:opacity-100 transition-all duration-700"></div>
+        <div className="relative bg-[#0d1117] rounded-[2rem] overflow-hidden border border-white/5 shadow-2xl">
+          <div className="flex items-center justify-between px-6 py-4 bg-white/5 border-b border-white/5">
+            <div className="flex gap-1.5">
+              <div className="h-2.5 w-2.5 rounded-full bg-[#ff5f56]"></div>
+              <div className="h-2.5 w-2.5 rounded-full bg-[#ffbd2e]"></div>
+              <div className="h-2.5 w-2.5 rounded-full bg-[#27c93f]"></div>
+            </div>
+            {value.language && (
+              <span className="text-[0.6rem] font-black uppercase tracking-widest text-slate-500 flex items-center gap-1.5">
+                <span className="h-1 w-1 rounded-full bg-garfield-500"></span>
+                {value.language}
+              </span>
+            )}
+          </div>
+          <div className="p-8 font-mono text-sm leading-relaxed text-slate-300 overflow-x-auto selection:bg-garfield-500/30">
+            <pre className="m-0"><code>{value.code}</code></pre>
+          </div>
+        </div>
       </div>
     ),
     table: ({ value }: any) => (

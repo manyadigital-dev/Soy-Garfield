@@ -22,6 +22,7 @@ const Sitemap: React.FC = () => {
             </div>
             <ul className="space-y-4">
               <li><Link to="/" className="text-slate-600 hover:text-garfield-600 font-medium block">Inicio</Link></li>
+              <li><Link to="/glosario" className="text-slate-600 hover:text-garfield-600 font-medium block">Diccionario Digital</Link></li>
               <li><Link to="/authors" className="text-slate-600 hover:text-garfield-600 font-medium block">Nuestro Equipo</Link></li>
               <li><Link to="/contact" className="text-slate-600 hover:text-garfield-600 font-medium block">Contacto</Link></li>
               <li><Link to="/write" className="text-slate-600 hover:text-garfield-600 font-medium block">Escribe para nosotros</Link></li>
